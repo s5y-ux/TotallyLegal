@@ -14,3 +14,5 @@
 ## Standards
 - **Product Readiness**: The product will be ready for demonstration at the MVP stage.
 - **Development Approach**: We will follow agile principles and continuous development, ensuring the project evolves until the end of the class.
+
+## Added this line
