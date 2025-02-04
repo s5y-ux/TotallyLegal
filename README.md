@@ -9,8 +9,7 @@
 - **Missed Deadlines**: Any missed deadlines will be treated as urgent and flagged accordingly.
 
 ## Ethics
-- **To Be Determined**: Ethics guidelines will be established by the team.
-
+- **Late Assignments**: You will have to peer code in the next sprint
 ## Standards
 - **Product Readiness**: The product will be ready for demonstration at the MVP stage.
 - **Development Approach**: We will follow agile principles and continuous development, ensuring the project evolves until the end of the class.
