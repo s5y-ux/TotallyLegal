@@ -10,6 +10,7 @@
 
 ## Ethics
 - **Late Assignments**: You will have to peer code in the next sprint
+- **Cheating**: You will have to re-learn what you cheated on
 ## Standards
 - **Product Readiness**: The product will be ready for demonstration at the MVP stage.
 - **Development Approach**: We will follow agile principles and continuous development, ensuring the project evolves until the end of the class.
