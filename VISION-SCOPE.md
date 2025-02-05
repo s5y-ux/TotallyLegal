@@ -1,4 +1,4 @@
-# 1. Business Requirements
+# 1. Business Requirements 🏛️
 
 ## 1.1 Background
 In recent years, the stock and trading market has gained significant popularity, leading to increased public curiosity about politicians' stock and investment histories. The interaction between politicians and financial markets has garnered attention, and this application aims to track such interactions in real time. Competitors like Quiver Quantitative, House Watch, and Join Autopilot already offer services that track politician trading history and provide investment insights to users.
