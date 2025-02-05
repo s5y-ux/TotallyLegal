@@ -13,6 +13,7 @@
 ## Ethics
 - **Late Assignments**: Late assignments will be treated as urgent. We will reflect on what went wrong during team meetings and discuss how to prevent similar issues in the future.
 - **Cheating**: If cheating occurs, the individual will be required to re-learn the material and share the lessons learned with the team.
+- **Impasse**: Should there be a dispute on what should be done, all members will be consulted, and if there is still a dispute, all members will have to decide what to do. If it is a simple yes-or-no dispute, then 2/3 will decide how to move forward, and if it is more nuanced, and none can agree to anything, then the founder (Shumaker) will give an ultimatum. 
 
 ## Standards
 - **Product Readiness**: The product will be ready for demonstration at the Minimum Viable Product (MVP) stage.
