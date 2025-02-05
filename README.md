@@ -1,4 +1,4 @@
-📜 # Team Contract
+# Team Contract 📜
 
 ## Communication Practices
 - **GitHub**: This will serve as our primary communication channel.
