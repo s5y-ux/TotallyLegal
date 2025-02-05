@@ -6,7 +6,7 @@
 - **Early is On Time**: We will strive to set reminders and meet deadlines ahead of schedule.
 
 ## Meeting Deadlines
-- **Early Submissions**: All assignments will be completed at least three days before the deadline.
+- **Early Submissions**: All assignments will be completed at least three hours before the deadline.
 - **Missed Deadlines**: Any missed deadlines will be treated as urgent and flagged accordingly.
 - **High Collaboration**: Collaboration on missed assignments will be encouraged, and help will be distributed among the team.
 
