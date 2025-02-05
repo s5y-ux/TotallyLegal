@@ -20,3 +20,6 @@
 
 ## Group Contract Non-Adherence
 - **Consequences**: Failure to adhere to this contract will result in a team discussion to address the issue. Repeated violations may require instructor intervention.
+
+## Project Licensing
+This project is licensed under the MIT License and as a result, is open source.
