@@ -1,6 +1,8 @@
 package com.example.totallylegal
 
+import TempTradeAPI
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.totallylegal.ui.theme.TotallyLegalTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +84,23 @@ fun TradeBox() {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
-                onClick = { println("Working...") },
+                onClick = {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        // Create the TempTradeAPI instance with the given API URL
+                        val tradeAPI = TempTradeAPI("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/transaction_report_for_05_14_2023.json")
+
+                        // Fetch the API data asynchronously
+                        tradeAPI.fetchApiData()
+
+                        // After fetching the data, log it to Logcat
+                        val dataString = tradeAPI.getDataString()
+                        Log.d("APIcall", dataString ?: "No data received")
+
+                        // Alternatively, get the data as a Map and log it
+                        /*val dataMap = tradeAPI.getDataMAP()
+                        Log.d("APIcallMap", dataMap.toString())*/
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Profile")
