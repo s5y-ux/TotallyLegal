@@ -6,6 +6,7 @@
 ![GitHub Issues](https://img.shields.io/github/issues/s5y-ux/TotallyLegal?style=flat-square)
 ![GitHub Stars](https://img.shields.io/github/stars/s5y-ux/TotallyLegal?style=flat-square)
 ![GitHub Forks](https://img.shields.io/github/forks/s5y-ux/TotallyLegal?style=flat-square)
+
 ![Untitled design(4)](https://github.com/user-attachments/assets/97531315-5f36-4e28-a8c4-1daa51069e6d)
 
 
