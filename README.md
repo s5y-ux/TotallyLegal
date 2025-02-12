@@ -7,8 +7,7 @@
 ![GitHub Stars](https://img.shields.io/github/stars/s5y-ux/TotallyLegal?style=flat-square)
 ![GitHub Forks](https://img.shields.io/github/forks/s5y-ux/TotallyLegal?style=flat-square)
 
-![Untitled design(4)](https://github.com/user-attachments/assets/97531315-5f36-4e28-a8c4-1daa51069e6d)
-
+![Untitled design (2)](https://github.com/user-attachments/assets/9c013687-fd8b-4136-a989-50b6a45041eb)
 
 ---
 
