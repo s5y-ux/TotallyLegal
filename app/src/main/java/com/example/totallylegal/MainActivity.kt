@@ -39,8 +39,44 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//MyAppTheme composable for custom color theme for Material3
+@Composable
+fun MyAppTheme(
+    darkTheme: Boolean = false, // Toggle for light/dark theme
+    content: @Composable () -> Unit // Content to be styled
+) {
+    // Define the color scheme (use Light or Dark depending on the toggle)
+    val colorScheme = if (darkTheme) {
+        darkColorScheme(
+            primary = Color(226,226,226),
+            onPrimary = Color(0xFF000000),
+            background = Color(25, 25, 25),
+            onBackground = Color(0xFFFFFFFF)
+
+        )
+    } else {
+        lightColorScheme(
+            primary = Color(26, 26, 26),
+            onPrimary = Color(0xFFFFFFFF),
+            background = Color(0xFFFFFBFE),
+            onBackground = Color(0xFF000000)
+
+        )
+    }
+
+    // Apply MaterialTheme
+    // We can add fonts in here later
+    MaterialTheme(
+        colorScheme = colorScheme,
+        content = content
+    )
+}
+
+// This is the tabs in the top right corner
 @Composable
 fun TabLayout(modifier: Modifier = Modifier) {
+
+    //Used to keep track of what tab you are on and the list of tabs
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Trade History", "News")
 
@@ -57,6 +93,9 @@ fun TabLayout(modifier: Modifier = Modifier) {
                 )
             }
         }
+
+        // This is a Kotlin switch statement that uses the HomeScreen
+        // And profile screen composables
         when (selectedTabIndex) {
             0 -> HomeScreen()
             1 -> ProfileScreen()
@@ -64,6 +103,9 @@ fun TabLayout(modifier: Modifier = Modifier) {
     }
 }
 
+/* We will get rid of this function in future iterations.
+ It creates the box that gives trade values. This will be
+ replaced with politicans */
 @Composable
 fun TradeBox() {
     Card(
@@ -89,6 +131,11 @@ fun TradeBox() {
 
             )
             Spacer(modifier = Modifier.height(12.dp))
+            /*
+            Whoever took the delete profile button task hit the lottery
+            All you have to do is delete this Button composable
+            without breaking the build. You got this!
+             */
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.Main).launch {
@@ -115,6 +162,14 @@ fun TradeBox() {
     }
 }
 
+
+/*
+This is used in order to create the news boxes
+In future iterations we will replace this with
+news screens you can swipe and an AI snack bar
+
+Please keep in mind I still need to make the NewsAPI class
+ */
 @Composable
 fun NewsBox() {
     Card(
@@ -149,6 +204,7 @@ fun NewsBox() {
     }
 }
 
+// I used lazy column so you can scroll. This is the home screen
 @Composable
 fun HomeScreen() {
     LazyColumn(
@@ -161,6 +217,8 @@ fun HomeScreen() {
     }
 }
 
+// Pretty self explanatory, you can look at the above
+// Composable and figure out how this works.
 @Composable
 fun ProfileScreen() {
     LazyColumn(
@@ -173,43 +231,5 @@ fun ProfileScreen() {
     }
 }
 
-@Composable
-fun MyAppTheme(
-    darkTheme: Boolean = false, // Toggle for light/dark theme
-    content: @Composable () -> Unit // Content to be styled
-) {
-    // Define the color scheme (use Light or Dark depending on the toggle)
-    val colorScheme = if (darkTheme) {
-        darkColorScheme(
-            primary = Color(226,226,226),
-            onPrimary = Color(0xFF000000),
-            background = Color(25, 25, 25),
-            onBackground = Color(0xFFFFFFFF)
-            // Add other colors as needed
-        )
-    } else {
-        lightColorScheme(
-            primary = Color(26, 26, 26),
-            onPrimary = Color(0xFFFFFFFF),
-            background = Color(0xFFFFFBFE),
-            onBackground = Color(0xFF000000)
-            // Add other colors as needed
-        )
-    }
-
-    // Apply MaterialTheme
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content        // Apply theme to the content
-    )
-}
 
 
-@Preview(showBackground = true)
-@Composable
-fun TabLayoutPreview() {
-    MyAppTheme(darkTheme = isSystemInDarkTheme()) {
-        TabLayout()
-    }
-
-}
