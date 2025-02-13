@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,11 +14,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.totallylegal.ui.theme.TotallyLegalTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TotallyLegalTheme {
+            MyAppTheme(darkTheme = isSystemInDarkTheme()) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TabLayout(modifier = Modifier.padding(innerPadding))
                 }
@@ -44,13 +47,13 @@ fun TabLayout(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize()) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.onPrimary
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(title, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                    text = { Text(title, fontSize = 18.sp, style = TextStyle(fontFamily = FontFamily.SansSerif)) }
                 )
             }
         }
@@ -74,13 +77,16 @@ fun TradeBox() {
                 text = "Politician Name",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                fontFamily = FontFamily.Monospace
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Trade: {Data Here}",
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                fontFamily = FontFamily.SansSerif
+
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
@@ -103,7 +109,7 @@ fun TradeBox() {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Profile")
+                Text("Profile", fontFamily = FontFamily.SansSerif)
             }
         }
     }
@@ -115,20 +121,22 @@ fun NewsBox() {
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "Headline",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                fontFamily = FontFamily.Monospace
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Summary: {Data Here}",
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                fontFamily = FontFamily.SansSerif
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
@@ -165,10 +173,43 @@ fun ProfileScreen() {
     }
 }
 
+@Composable
+fun MyAppTheme(
+    darkTheme: Boolean = false, // Toggle for light/dark theme
+    content: @Composable () -> Unit // Content to be styled
+) {
+    // Define the color scheme (use Light or Dark depending on the toggle)
+    val colorScheme = if (darkTheme) {
+        darkColorScheme(
+            primary = Color(226,226,226),
+            onPrimary = Color(0xFF000000),
+            background = Color(25, 25, 25),
+            onBackground = Color(0xFFFFFFFF)
+            // Add other colors as needed
+        )
+    } else {
+        lightColorScheme(
+            primary = Color(26, 26, 26),
+            onPrimary = Color(0xFFFFFFFF),
+            background = Color(0xFFFFFBFE),
+            onBackground = Color(0xFF000000)
+            // Add other colors as needed
+        )
+    }
+
+    // Apply MaterialTheme
+    MaterialTheme(
+        colorScheme = colorScheme,
+        content = content        // Apply theme to the content
+    )
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun TabLayoutPreview() {
-    TotallyLegalTheme {
+    MyAppTheme(darkTheme = isSystemInDarkTheme()) {
         TabLayout()
     }
+
 }
