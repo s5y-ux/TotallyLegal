@@ -1,4 +1,7 @@
 # Totally Legal: Politician Stock Tracker 📈 
+
+![Untitled design (2)](https://github.com/user-attachments/assets/2fc6e505-a41a-4bff-a425-e7ab67b7593c)
+
 **Totally Legal** is an Android app designed to provide users with real-time insights into the stock trades made by members of Congress. By tracking politicians' trading activities and offering centralized news on politics and economics, the app empowers users to make informed investment decisions. Whether you're a financial analyst, political activist, or curious investor, Totally Legal is your go-to resource for understanding how political actions influence the market.
 
 ![GitHub License](https://img.shields.io/github/license/s5y-ux/TotallyLegal?style=flat-square)
@@ -6,8 +9,6 @@
 ![GitHub Issues](https://img.shields.io/github/issues/s5y-ux/TotallyLegal?style=flat-square)
 ![GitHub Stars](https://img.shields.io/github/stars/s5y-ux/TotallyLegal?style=flat-square)
 ![GitHub Forks](https://img.shields.io/github/forks/s5y-ux/TotallyLegal?style=flat-square)
-
-![Untitled design (2)](https://github.com/user-attachments/assets/2fc6e505-a41a-4bff-a425-e7ab67b7593c)
 
 
 ---
