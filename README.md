@@ -1,3 +1,6 @@
+### Authors:
+-**Betsy Morales**
+
 # Totally Legal: Politician Stock Tracker 📈 
 
 ![Untitled design (2)](https://github.com/user-attachments/assets/2fc6e505-a41a-4bff-a425-e7ab67b7593c)
