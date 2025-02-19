@@ -1,5 +1,7 @@
 ### Authors
 - **Joseph Shumaker**
+- **Betsy Morales**
+
 
 # Totally Legal: Politician Stock Tracker 📈 
 
