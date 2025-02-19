@@ -1,5 +1,8 @@
+
 ### Authors:
--**Demitri Gentile**
+- **Joseph Shumaker**
+- **Betsy Morales**
+- **Demitri Gentile**
 
 # Totally Legal: Politician Stock Tracker 📈 
 
