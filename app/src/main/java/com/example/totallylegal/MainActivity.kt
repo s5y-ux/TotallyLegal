@@ -1,6 +1,6 @@
 package com.example.totallylegal
 
-import TempTradeAPI
+import MasterAPILib
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -105,7 +105,7 @@ fun TabLayout(modifier: Modifier = Modifier) {
  It creates the box that gives trade values. This will be
  replaced with politicans */
 @Composable
-fun TradeBox() {
+fun TradeBox(name: String, ticker: String, amount: String, type: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         shape = RoundedCornerShape(12.dp),
@@ -114,7 +114,7 @@ fun TradeBox() {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Politician Name",
+                text = name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
@@ -122,7 +122,23 @@ fun TradeBox() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Trade: {Data Here}",
+                text = "Trade: $ticker",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontFamily = FontFamily.SansSerif
+
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Amount: $amount",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontFamily = FontFamily.SansSerif
+
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Type: $type",
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = FontFamily.SansSerif
@@ -138,18 +154,16 @@ fun TradeBox() {
                 onClick = {
                     CoroutineScope(Dispatchers.Main).launch {
                         // Create the TempTradeAPI instance with the given API URL
-                        val tradeAPI = TempTradeAPI("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/transaction_report_for_05_14_2023.json")
+                        val tradeAPI = MasterAPILib("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/transaction_report_for_05_14_2023.json")
 
                         // Fetch the API data asynchronously
-                        tradeAPI.fetchApiData()
-
-                        // After fetching the data, log it to Logcat
-                        val dataString = tradeAPI.getDataString()
-                        Log.d("APIcall", dataString ?: "No data received")
+                        Log.d("Internal Map", tradeAPI.toString())
 
                         // Alternatively, get the data as a Map and log it
-                        /*val dataMap = tradeAPI.getDataMAP()
-                        Log.d("APIcallMap", dataMap.toString())*/
+                        /*val dataMap = tradeAPI.getDataObject()
+                        dataMap?.let {
+                            Log.d("Parsed Data", "User: ${it.name}, Transactions: ${it.transactions}")
+                        }*/
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -205,15 +219,30 @@ fun NewsBox() {
 // I used lazy column so you can scroll. This is the home screen
 @Composable
 fun HomeScreen() {
+    val tradeList = remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    val coroutineScope = rememberCoroutineScope()
+
+    // Fetch API data when the screen is loaded
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            val result = MasterAPILib("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json") // Replace with your API URL
+            if (result != null) {
+                tradeList.value = result
+            }
+        }
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(10) {
-            TradeBox()
+        items(tradeList.value.size) { tradeItem ->
+            val ref = tradeList.value.get(tradeItem);
+            TradeBox(ref.getValue("representative").toString(), ref.getValue("ticker").toString(), ref.getValue("amount").toString(), ref.getValue("type").toString())
         }
     }
 }
+
 
 // Pretty self explanatory, you can look at the above
 // Composable and figure out how this works.
