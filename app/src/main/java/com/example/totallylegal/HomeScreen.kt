@@ -22,7 +22,7 @@ fun HomeScreen() {
     // Fetch API data when the screen is loaded
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            tradeList.value = TradeAPI().fetchByRepresentative("Nancy Pelosi")
+            tradeList.value = TradeAPI().fetchTradeData()
             Log.d("Size", tradeList.value.size.toString())
         }
     }
