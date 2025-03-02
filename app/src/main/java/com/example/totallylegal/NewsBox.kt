@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NewsBox() {
+fun NewsBox(sourceName: String, summary: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         shape = RoundedCornerShape(12.dp),
@@ -31,7 +31,7 @@ fun NewsBox() {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Headline",
+                text = sourceName,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
@@ -39,7 +39,7 @@ fun NewsBox() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Summary: {Data Here}",
+                text = summary,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = FontFamily.SansSerif

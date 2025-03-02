@@ -34,3 +34,47 @@ suspend fun MasterAPILib(url: String): List<Map<String, Any>>? {
         }
     }
 }
+
+data class NewsResponse(
+    val status: String,
+    val totalResults: Int,
+    val articles: List<Article>
+)
+
+data class Article(
+    val source: Source,
+    val author: String?,
+    val title: String,
+    val description: String?,
+    val url: String,
+    val urlToImage: String?,
+    val publishedAt: String,
+    val content: String?
+)
+
+data class Source(
+    val id: String?,
+    val name: String
+)
+
+// Function to parse JSON response
+fun parseNewsApiResponse(url: String): NewsResponse? {
+    return try {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+        val response = client.newCall(request).execute()
+
+        if (response.isSuccessful) {
+            val jsonResponse = response.body?.string()
+            jsonResponse?.let {
+                Gson().fromJson(it, NewsResponse::class.java)
+            }
+        } else {
+            println("API Error: ${response.code}")
+            null
+        }
+    } catch (e: Exception) {
+        println("Error fetching or parsing JSON: ${e.message}")
+        null
+    }
+}
