@@ -69,7 +69,7 @@ fun TradeBox(name: String, ticker: String, amount: String, type: String) {
             All you have to do is delete this Button composable
             without breaking the build. You got this!
              */
-            Button(
+            /*Button(
                 onClick = {
                     CoroutineScope(Dispatchers.Main).launch {
                         // Create the TempTradeAPI instance with the given API URL
@@ -89,9 +89,7 @@ fun TradeBox(name: String, ticker: String, amount: String, type: String) {
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Profile", fontFamily = FontFamily.SansSerif)
+            ) */
             }
         }
     }
-}
