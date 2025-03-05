@@ -11,8 +11,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun HomeScreen() {
@@ -31,6 +36,16 @@ fun HomeScreen() {
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
+        if(tradeList.value.size == 0){
+            item{
+            Text(
+                text = "Checking your internet connection...",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Thin,
+                color = Color.Black,
+                fontFamily = FontFamily.Monospace
+            )}
+        } else {
         items(tradeList.value.size) { tradeItem ->
             val ref = tradeList.value.get(tradeItem)
             TradeBox(
@@ -40,5 +55,5 @@ fun HomeScreen() {
                 ref.getValue("type").toString()
             )
         }
-    }
+    }}
 }
