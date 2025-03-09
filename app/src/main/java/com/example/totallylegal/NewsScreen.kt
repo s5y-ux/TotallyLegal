@@ -18,10 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 
 @Composable
-fun NewsScreen() {
+fun NewsScreen(navController: NavController) {
     val tradeList = remember { mutableStateOf(NewsResponse("N/A", 1, emptyList())) }
 
     // Fetch API data when the screen is loaded
@@ -38,17 +39,16 @@ fun NewsScreen() {
         if(tradeList.value.articles.size == 0){
             item{
                 Text(
-                    text = "Checking your internet connection...",
+                    text = "Connecting To Server...",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Thin,
-                    color = Color.Black,
-                    fontFamily = FontFamily.Monospace
+                    color = Color.White
                 )
             }
         } else {
         items(tradeList.value.articles) { tradeItem ->
             Log.d("Source Name", tradeItem.source.name)
-            NewsBox(tradeItem.source.name, tradeItem.title)
+            NewsBox(navController, tradeItem.source.name, tradeItem.title)
         }
     }}
 }

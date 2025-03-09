@@ -37,31 +37,27 @@ fun TradeBox(name: String, ticker: String, amount: String, type: String) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = name,
-                fontSize = 20.sp,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                fontFamily = FontFamily.Monospace
+                color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Trade: $ticker",
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontFamily = FontFamily.SansSerif
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Amount: $amount",
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontFamily = FontFamily.SansSerif
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Type: $type",
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontFamily = FontFamily.SansSerif
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
             /*

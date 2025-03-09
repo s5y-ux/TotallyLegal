@@ -17,9 +17,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun NewsBox(sourceName: String, summary: String) {
+fun NewsBox(navController: NavController, sourceName: String, summary: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         shape = RoundedCornerShape(12.dp),
@@ -34,18 +35,16 @@ fun NewsBox(sourceName: String, summary: String) {
                 text = sourceName,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                fontFamily = FontFamily.Monospace
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = summary,
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontFamily = FontFamily.SansSerif
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Button(onClick = { println("Working...") }, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = { navController.navigate("article_screen") }, modifier = Modifier.fillMaxWidth()) {
                 Text("See Article!")
             }
         }

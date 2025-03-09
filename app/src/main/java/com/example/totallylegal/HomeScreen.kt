@@ -18,9 +18,10 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val tradeList = remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -39,11 +40,10 @@ fun HomeScreen() {
         if(tradeList.value.size == 0){
             item{
             Text(
-                text = "Checking your internet connection...",
+                text = "Connecting To Server...",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Thin,
-                color = Color.Black,
-                fontFamily = FontFamily.Monospace
+                color = Color.White
             )}
         } else {
         items(tradeList.value.size) { tradeItem ->

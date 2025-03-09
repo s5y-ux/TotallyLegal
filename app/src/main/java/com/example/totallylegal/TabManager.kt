@@ -15,9 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun TabLayout(modifier: Modifier = Modifier) {
+fun TabLayout(navController: NavController, modifier: Modifier = Modifier) {
 
     // Used to keep track of what tab you are on and the list of tabs
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -35,8 +36,7 @@ fun TabLayout(modifier: Modifier = Modifier) {
                     text = {
                         Text(
                             title,
-                            fontSize = 18.sp,
-                            style = TextStyle(fontFamily = FontFamily.SansSerif)
+                            fontSize = 18.sp
                         )
                     }
                 )
@@ -46,8 +46,8 @@ fun TabLayout(modifier: Modifier = Modifier) {
         // This is a Kotlin switch statement that uses the HomeScreen
         // And profile screen composables
         when (selectedTabIndex) {
-            0 -> HomeScreen()
-            1 -> NewsScreen()
+            0 -> HomeScreen(navController)
+            1 -> NewsScreen(navController)
         }
     }
 }
