@@ -60,7 +60,7 @@ fun NewsScreen(navController: NavController) {
         } else {
             items(tradeList.value.articles) { tradeItem ->
                 Log.d("Source Name", tradeItem.source.name)
-                NewsBox(navController, tradeItem.source.name, tradeItem.title, tradeItem.source.id.toString())
+                NewsBox(navController, tradeItem.source.name, tradeItem.title)
             }
         }
     }
