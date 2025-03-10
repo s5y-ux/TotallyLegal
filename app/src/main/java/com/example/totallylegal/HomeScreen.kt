@@ -2,9 +2,11 @@ package com.example.totallylegal
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.motionEventSpy
+import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 
 @Composable
@@ -39,12 +45,22 @@ fun HomeScreen(navController: NavController) {
     ) {
         if(tradeList.value.size == 0){
             item{
-            Text(
-                text = "Connecting To Server...",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Thin,
-                color = Color.White
-            )}
+                Column(modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.connect),
+                        contentDescription = "Connecting To Server..."
+                    )
+                    Text(
+                        text = "Connecting To Server...",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Thin,
+                        color = Color.White
+                    )
+                }
+            }
         } else {
         items(tradeList.value.size) { tradeItem ->
             val ref = tradeList.value.get(tradeItem)
