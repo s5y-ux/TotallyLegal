@@ -45,7 +45,7 @@ fun TabLayout(navController: NavController, modifier: Modifier = Modifier) {
         // And profile screen composables
         when (selectedTabIndex) {
             0 -> HomeScreen(navController)
-            1 -> NewsScreen(navController)
+            1 -> NewsScreen()
         }
     }
 }

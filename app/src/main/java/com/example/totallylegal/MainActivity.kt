@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.totallylegal.LogIn
 
 class MainActivity : ComponentActivity() {
     private var mediaPlayer: MediaPlayer? = null
@@ -39,15 +40,15 @@ class MainActivity : ComponentActivity() {
                                 ArticleScreen(navController, articleId = backStackEntry.arguments?.getString("id"))
                             }
                             composable("news_screen") {
-                                NewsScreen(navController)
+                                NewsScreen()
                             }
                         }
                     }
+                    AppNavHost()
                 }
             }
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer?.release() // Release resources when done
