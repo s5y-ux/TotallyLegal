@@ -25,17 +25,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
+import politicianPage
 
 @Composable
 fun HomeScreen(navController: NavController) {
     val tradeList = remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    val newList = remember { mutableStateOf(politicianPage("N/A", arrayListOf())) }
     val coroutineScope = rememberCoroutineScope()
 
     // Fetch API data when the screen is loaded
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             tradeList.value = TradeAPI().fetchTradeData()
+            newList.value = ModernTradeAPI().fetchTradeData()
             Log.d("Size", tradeList.value.size.toString())
+            Log.d("Modern", newList.value.name)
         }
     }
 

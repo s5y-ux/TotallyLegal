@@ -57,6 +57,35 @@ data class Source(
     val name: String
 )
 
+data class politicianPage(
+    val name: String,
+    val quickInfo: ArrayList<String>
+)
+
+fun parseTradeResponse(url: String): politicianPage? {
+    return try {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+        val response = client.newCall(request).execute()
+
+        response.use {
+            if (!it.isSuccessful) {
+                println("API Error: ${it.code}")
+                return null
+            }
+
+            val jsonResponse = it.body?.string()
+            jsonResponse?.let { json ->
+                Gson().fromJson(json, politicianPage::class.java)
+            }
+        }
+    } catch (e: Exception) {
+        println("Error fetching or parsing JSON: ${e.message}")
+        null
+    }
+}
+
+
 // Function to parse JSON response
 fun parseNewsApiResponse(url: String): NewsResponse? {
     return try {
