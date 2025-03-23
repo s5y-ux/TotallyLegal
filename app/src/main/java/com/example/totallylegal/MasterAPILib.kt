@@ -1,6 +1,7 @@
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -62,23 +63,53 @@ data class politicianPage(
     val quickInfo: ArrayList<String>
 )
 
-fun parseTradeResponse(url: String): politicianPage? {
+fun parseTradeResponse(url: String): Map<String, List<String>>? {
     return try {
         val client = OkHttpClient()
         val request = Request.Builder().url(url).build()
-        val response = client.newCall(request).execute()
-
-        response.use {
-            if (!it.isSuccessful) {
-                println("API Error: ${it.code}")
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                println("API Error: ${response.code}")
                 return null
             }
 
-            val jsonResponse = it.body?.string()
+            val jsonResponse = response.body?.string()
             jsonResponse?.let { json ->
-                Gson().fromJson(json, politicianPage::class.java)
+                val type = object : TypeToken<Map<String, List<String>>>() {}.type
+                return Gson().fromJson(json, type)
             }
         }
+        null
+    } catch (e: Exception) {
+        println("Error fetching or parsing JSON: ${e.message}")
+        null
+    }
+}
+
+fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
+    return try {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                println("API Error: ${response.code}")
+                return null
+            }
+
+            val jsonResponse = response.body?.string()
+            jsonResponse?.let { json ->
+                val jsonObject = Gson().fromJson(json, JsonObject::class.java)
+                val politician = jsonObject["Politician"]?.asString ?: return null
+                val tradesJson = jsonObject["TradesData"]
+
+                val tradesType = object : TypeToken<List<List<String>>>() {}.type
+                val tradesList: List<List<String>> = Gson().fromJson(tradesJson, tradesType)
+
+                val formattedTrades = tradesList.map { trade -> trade.joinToString(", ") }
+                return mapOf(politician to formattedTrades)
+            }
+        }
+        null
     } catch (e: Exception) {
         println("Error fetching or parsing JSON: ${e.message}")
         null
