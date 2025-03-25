@@ -38,6 +38,12 @@ class MainActivity : ComponentActivity() {
                             ) { backStackEntry ->
                                 ArticleScreen(navController, articleId = backStackEntry.arguments?.getString("id"))
                             }
+                            composable(
+                                "politician_profile/{id}",
+                                arguments = listOf(navArgument("id") { type = NavType.StringType })
+                            ) { backStackEntry ->
+                                PoliticianScreen(navController ,backStackEntry.arguments?.getString("id"))
+                            }
                             composable("news_screen") {
                                 NewsScreen(navController)
                             }

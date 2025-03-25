@@ -20,7 +20,7 @@ fun TabLayout(navController: NavController, modifier: Modifier = Modifier) {
 
     // Used to keep track of what tab you are on and the list of tabs
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Trade History", "News")
+    val tabs = listOf("Politicians", "Trades", "News")
 
     Column(modifier = modifier.fillMaxSize()) {
         TabRow(
@@ -45,7 +45,8 @@ fun TabLayout(navController: NavController, modifier: Modifier = Modifier) {
         // And profile screen composables
         when (selectedTabIndex) {
             0 -> HomeScreen(navController)
-            1 -> NewsScreen(navController)
+            1 -> TradesScreen()
+            2 -> NewsScreen(navController)
         }
     }
 }
