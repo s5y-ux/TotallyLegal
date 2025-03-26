@@ -86,6 +86,8 @@ fun parseTradeResponse(url: String): Map<String, List<String>>? {
     }
 }
 
+// TODO: Change this 
+
 fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
     return try {
         val client = OkHttpClient()
@@ -115,7 +117,7 @@ fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
         null
     }
 }
-
+// End Method
 
 // Function to parse JSON response
 fun parseNewsApiResponse(url: String): NewsResponse? {
