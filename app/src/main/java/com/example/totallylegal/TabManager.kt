@@ -14,6 +14,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.input.pointer.pointerInput
+import kotlinx.coroutines.*
 
 @Composable
 fun TabLayout(navController: NavController, modifier: Modifier = Modifier) {
@@ -40,13 +44,34 @@ fun TabLayout(navController: NavController, modifier: Modifier = Modifier) {
                 )
             }
         }
+        var isSwipeEnabled = true
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectHorizontalDragGestures { _, dragAmount ->
+                        val swipeThreshold = 5                          //SENSITIVE
+                        if (isSwipeEnabled) {
+                            if (dragAmount < -swipeThreshold && selectedTabIndex < 2) {
+                                selectedTabIndex++
+                            } else if (dragAmount > swipeThreshold && selectedTabIndex > 0) {
+                                selectedTabIndex--
+                            }
 
-        // This is a Kotlin switch statement that uses the HomeScreen
-        // And profile screen composables
-        when (selectedTabIndex) {
-            0 -> HomeScreen(navController)
-            1 -> TradesScreen()
-            2 -> NewsScreen(navController)
+                            isSwipeEnabled = false
+                            CoroutineScope(Dispatchers.Main).launch {
+                                delay(300) //seems 'bout right
+                                isSwipeEnabled = true
+                            }
+                        }
+                    }
+                }
+        ) {
+            when (selectedTabIndex) {
+                0 -> HomeScreen(navController)
+                1 -> TradesScreen()
+                2 -> NewsScreen(navController)
+            }
         }
     }
 }
