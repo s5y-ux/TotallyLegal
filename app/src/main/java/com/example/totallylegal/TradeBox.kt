@@ -17,7 +17,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TradeBox(name: String, ticker: String, amount: String, type: String) {
+fun Entry(type: String, holder: String){
+    Text(
+        text = "$type: $holder",
+        fontSize = 16.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+}
+
+@Composable
+fun TradeBox(name: String, party: String, seat: String, state: String, companyName: String, ticker: String, disclosureTime: String, tradeDate: String, daysUntilDisclosure: String, tradeType: String, tradeAmount: String, tickerPrice: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         shape = RoundedCornerShape(12.dp),
@@ -35,24 +45,17 @@ fun TradeBox(name: String, ticker: String, amount: String, type: String) {
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Trade: $ticker",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Amount: $amount",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Type: $type",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(12.dp))
+            Entry("Party", party)
+            Entry("Seat", seat)
+            Entry("State", state)
+            Entry("Ticker", ticker)
+            Entry("Company Name", companyName)
+            Entry("Disclosure Time", disclosureTime)
+            Entry("Trade Date", tradeDate)
+            Entry("Days Until Disclosure", daysUntilDisclosure)
+            Entry("Trade Type", tradeType)
+            Entry("Trade Amount", tradeAmount)
+            Entry("Ticker Price", tickerPrice)
 
         }
     }

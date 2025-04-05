@@ -2,6 +2,7 @@ package com.example.totallylegal
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import parseLatestTradesResponse
 import parsePoliticianResponse
 import parseTradeResponse
 
@@ -28,6 +29,19 @@ class ModernTradeAPI {
             } else {
                 println("Fallback: No politician data available")
                 emptyMap() // Return an empty map instead of calling `politicianPage`
+            }
+        }
+    }
+
+    suspend fun fetchLatestTradesData(): List<List<String>> {
+        return withContext(Dispatchers.IO) {
+            val apiUrl = "https://premium-formally-hawk.ngrok-free.app/get_latest_trades"
+            val data = parseLatestTradesResponse(apiUrl)
+            if (data != null) {
+                data
+            } else {
+                println("Fallback: No latest trades data available")
+                emptyList() // Return an empty list instead of calling `politicianPage`
             }
         }
     }

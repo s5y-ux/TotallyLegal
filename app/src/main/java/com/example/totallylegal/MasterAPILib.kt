@@ -58,10 +58,31 @@ data class Source(
     val name: String
 )
 
-data class politicianPage(
-    val name: String,
-    val quickInfo: ArrayList<String>
-)
+
+fun parseLatestTradesResponse(url: String): List<List<String>>? {
+    return try {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                println("API Error: ${response.code}")
+                return null
+            }
+
+            val jsonBody = response.body?.string()
+            if (jsonBody != null) {
+                val type = object : TypeToken<List<List<String>>>() {}.type
+                return Gson().fromJson(jsonBody, type)
+            }
+            null
+        }
+    } catch (e: Exception) {
+        println("Error fetching or parsing JSON: ${e.message}")
+        null
+    }
+}
+
 
 fun parseTradeResponse(url: String): Map<String, List<String>>? {
     return try {
@@ -86,8 +107,7 @@ fun parseTradeResponse(url: String): Map<String, List<String>>? {
     }
 }
 
-// TODO: Change This 
-
+// TODO: Change This
 fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
     return try {
         val client = OkHttpClient()
