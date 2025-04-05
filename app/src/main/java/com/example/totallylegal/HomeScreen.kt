@@ -21,33 +21,38 @@ import androidx.navigation.NavController
 fun HomeScreen(navController: NavController) {
     val tradeList = remember { mutableStateOf(emptyList<Map<String, Any>>()) }
     val newList = remember { mutableStateOf(mapOf<String, List<String>>()) }
+    val starred = remember { mutableStateOf(mutableSetOf<String>()) }
     val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
-    // Fetch API data when the screen is loaded
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             tradeList.value = TradeAPI().fetchTradeData()
-            newList.value = ModernTradeAPI().fetchTradeData() ?: emptyMap()
+            newList.value = ModernTradeAPI().fetchTradeData()
             Log.d("Size", tradeList.value.size.toString())
             Log.d("Modern", newList.value.toString())
         }
     }
 
-    // Filtered trade items based on search input
-    val filteredList = newList.value.filterKeys { key ->
-        key.contains(searchQuery, ignoreCase = true)
-    }
+    val filteredAndSorted = newList.value
+        .filterKeys { it.contains(searchQuery, ignoreCase = true) }
+        .toList()
+        .sortedWith(compareByDescending<Pair<String, List<String>>> { (name, _) ->
+            name in starred.value
+        }.thenBy { it.first })
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        // Search Bar
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             label = { Text("Search Politicians") },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
             singleLine = true
         )
 
@@ -75,16 +80,24 @@ fun HomeScreen(navController: NavController) {
                     }
                 }
             } else {
-                items(filteredList.keys.toList()) { key ->
-                    val ref = filteredList[key]
+                items(filteredAndSorted) { (name, data) ->
                     PoliticianBox(
-                        navController,
-                        key,
-                        ref?.get(0).toString(),
-                        ref?.get(1).toString()
+                        navController = navController,
+                        name = name,
+                        state = data.getOrNull(0).orEmpty(),
+                        party = data.getOrNull(1).orEmpty(),
+                        isStarred = name in starred.value,
+                        onStarToggle = {
+                            if (name in starred.value) {
+                                starred.value.remove(name)
+                            } else {
+                                starred.value.add(name)
+                            }
+                        }
                     )
                 }
             }
         }
     }
 }
+
