@@ -3,26 +3,26 @@ package com.example.totallylegal
 class timeManager {
     private var totalTime: Int = 0
 
-    public constructor(parameter: String){
-        val Hours: Int = parameter.slice(IntRange(0, 2)).toInt()
-        val Minutes: Int = parameter.slice(IntRange(3, 4)).toInt()
+    constructor(parameter: String){
+        val hours: Int = parameter.slice(IntRange(0, 2)).toInt()
+        val minutes: Int = parameter.slice(IntRange(3, 4)).toInt()
 
-        val totalTime = (Hours * 60) + Minutes;
+        val totalTime = (hours * 60) + minutes
 
         this.totalTime = totalTime
     }
 
-    public fun getTime(): Int {
+    fun getTime(): Int {
         return totalTime;
     }
 
     // TODO: pass timezone object into this method
 
-    public fun setTime(parameter: String) {
-        val Hours: Int = parameter.slice(IntRange(0, 2)).toInt()
-        val Minutes: Int = parameter.slice(IntRange(3, 4)).toInt()
+    fun setTime(parameter: String) {
+        val hours: Int = parameter.slice(IntRange(0, 2)).toInt()
+        val minutes: Int = parameter.slice(IntRange(3, 4)).toInt()
 
-        this.totalTime -= (Hours * 60) + Minutes;
+        this.totalTime -= (hours * 60) + minutes
     }
 
 }
