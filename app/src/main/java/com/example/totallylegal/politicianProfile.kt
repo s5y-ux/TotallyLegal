@@ -1,4 +1,5 @@
 package com.example.totallylegal
+
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -23,17 +23,16 @@ fun TradeItem(trade: Map<String, Any>) {
     }
 }*/
 
-    @Composable
-    fun PoliticianScreen(navController: NavController, politicianId: String?) {
-        val trades = remember { mutableStateOf<Map<String, Any>?>(null) }
-        val coroutineScope = rememberCoroutineScope()
-
-        LaunchedEffect(politicianId) {
-            coroutineScope.launch {
-                trades.value = politicianId?.let { ModernTradeAPI().fetchPoliticianData(it) }
-                Log.d("Modern", trades.value.toString())
-            }
-        }
+@Composable
+fun PoliticianScreen(navController: NavController, politicianId: String?) {
+     val trades = remember { mutableStateOf<Map<String, Any>?>(null) }
+     val coroutineScope = rememberCoroutineScope()
+     LaunchedEffect(politicianId) {
+         coroutineScope.launch {
+             trades.value = politicianId?.let { ModernTradeAPI().fetchPoliticianData(it) }
+             Log.d("Modern", trades.value.toString())
+         }
+     }
 
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -48,9 +47,7 @@ fun TradeItem(trade: Map<String, Any>) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            if (trades.value == null) {
-                CircularProgressIndicator()
-            } else {
+
                 LazyColumn {
                     trades.value?.let { trade ->
                         trade.forEach { (key, value) ->
@@ -68,11 +65,9 @@ fun TradeItem(trade: Map<String, Any>) {
                                     style = MaterialTheme.typography.bodyMedium,
                                     modifier = Modifier.padding(bottom = 16.dp)
                                 )
-
                             }
                         }
                     }
-                }
-            }
         }
-    }
+   }
+}
