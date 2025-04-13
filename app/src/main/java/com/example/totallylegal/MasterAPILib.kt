@@ -58,6 +58,19 @@ data class Source(
     val name: String
 )
 
+data class TradeEntry(
+    val ticker: String,
+    val date: String,
+    val delay: String,
+    val type: String,
+    val amount: String
+)
+
+data class PoliticianTrades(
+    val party: String,
+    val politician: String,
+    val tradesData: List<TradeEntry>
+)
 
 fun parseLatestTradesResponse(url: String): List<List<String>>? {
     return try {
@@ -108,7 +121,7 @@ fun parseTradeResponse(url: String): Map<String, List<String>>? {
 }
 
 // TODO: Change This
-fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
+fun parsePoliticianResponse(url: String): PoliticianTrades? {
     return try {
         val client = OkHttpClient()
         val request = Request.Builder().url(url).build()
@@ -121,14 +134,31 @@ fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
             val jsonResponse = response.body?.string()
             jsonResponse?.let { json ->
                 val jsonObject = Gson().fromJson(json, JsonObject::class.java)
-                val politician = jsonObject["Politician"]?.asString ?: return null
-                val tradesJson = jsonObject["TradesData"]
 
+                val party = jsonObject["Party"]?.asString ?: return null
+                val politician = jsonObject["Politician"]?.asString ?: return null
+
+                val tradesJson = jsonObject["TradesData"]
                 val tradesType = object : TypeToken<List<List<String>>>() {}.type
                 val tradesList: List<List<String>> = Gson().fromJson(tradesJson, tradesType)
 
-                val formattedTrades = tradesList.map { trade -> trade.joinToString(", ") }
-                return mapOf(politician to formattedTrades)
+                val tradeEntries = tradesList.mapNotNull { trade ->
+                    if (trade.size == 5) {
+                        TradeEntry(
+                            ticker = trade[0],
+                            date = trade[1],
+                            delay = trade[2],
+                            type = trade[3],
+                            amount = trade[4]
+                        )
+                    } else null
+                }
+
+                return PoliticianTrades(
+                    party = party,
+                    politician = politician,
+                    tradesData = tradeEntries
+                )
             }
         }
         null
@@ -137,6 +167,7 @@ fun parsePoliticianResponse(url: String): Map<String, List<String>>? {
         null
     }
 }
+
 // End Method
 
 // Function to parse JSON response

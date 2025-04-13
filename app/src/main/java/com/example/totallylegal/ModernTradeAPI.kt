@@ -1,5 +1,6 @@
 package com.example.totallylegal
 
+import PoliticianTrades
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import parseLatestTradesResponse
@@ -20,7 +21,7 @@ class ModernTradeAPI {
         }
     }
 
-    suspend fun fetchPoliticianData(id: String): Map<String, List<String>> {
+    suspend fun fetchPoliticianData(id: String): PoliticianTrades? {
         return withContext(Dispatchers.IO) {
             val apiUrl = "https://premium-formally-hawk.ngrok-free.app/get_trades?name=$id"
             val data = parsePoliticianResponse(apiUrl)
@@ -28,7 +29,7 @@ class ModernTradeAPI {
                 data
             } else {
                 println("Fallback: No politician data available")
-                emptyMap() // Return an empty map instead of calling `politicianPage`
+                null
             }
         }
     }
