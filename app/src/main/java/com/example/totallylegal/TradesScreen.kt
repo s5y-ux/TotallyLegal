@@ -1,57 +1,60 @@
 package com.example.totallylegal
 
-import NewsResponse
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 
 @Composable
-fun NewsScreen(navController: NavController) {
-    val tradeList = remember { mutableStateOf(NewsResponse("N/A", 1, emptyList())) }
+fun TradesScreen() {
+    val tradeList = remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    val newTradeList = remember { mutableStateOf<List<List<String>>>(emptyList()) }
+    val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
     // Fetch API data when the screen is loaded
     LaunchedEffect(Unit) {
-        val response = NewsAPI().fetchTradeData()
-        tradeList.value = response
-        Log.d("Size", response.articles.size.toString())
+        coroutineScope.launch {
+            tradeList.value = TradeAPI().fetchTradeData()
+            newTradeList.value = ModernTradeAPI().fetchLatestTradesData()
+            Log.d("Size", newTradeList.value.size.toString())
+        }
     }
 
-    // Filtered news articles based on search input
-    val filteredArticles = tradeList.value.articles.filter { article ->
-        article.title.contains(searchQuery, ignoreCase = true) ||
-                article.source.name.contains(searchQuery, ignoreCase = true)
+    val filteredList = newTradeList.value.filter {
+        it[5].contains(searchQuery, ignoreCase = true)
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        // Search Bar
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            label = { Text("Search News") },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+            label = { Text("Search by Ticker") },
+            modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxSize()
         ) {
-            if (tradeList.value.articles.isEmpty()) {
+            if (newTradeList.value.isEmpty()) {
                 item {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -71,9 +74,22 @@ fun NewsScreen(navController: NavController) {
                     }
                 }
             } else {
-                items(filteredArticles) { tradeItem ->
-                    Log.d("Source Name", tradeItem.source.name)
-                    NewsBox(navController, tradeItem.source.name, tradeItem.title)
+                items(filteredList.size) { index ->
+                    val ref = filteredList[index]
+                    TradeBox(
+                        ref[0],
+                        ref[1],
+                        ref[2],
+                        ref[3],
+                        ref[4],
+                        ref[5],
+                        ref[6],
+                        ref[7],
+                        ref[8],
+                        ref[9],
+                        ref[10],
+                        ref[11]
+                    )
                 }
             }
         }
