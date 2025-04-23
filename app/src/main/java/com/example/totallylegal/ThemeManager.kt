@@ -35,9 +35,9 @@ val CustomTypography = Typography(
 fun MyAppTheme(darkTheme: Boolean = false, content: @Composable () -> Unit) {
     val colorScheme = if (darkTheme) {
         darkColorScheme(
-            primary = Color(217, 217, 217),
+            primary = Color(255, 255, 255, 255),
             onPrimary = Color(18, 18, 18),
-            background = Color(30, 30, 30),
+            background = Color(24, 24, 24, 255),
             onBackground = Color(245, 245, 245)
 
             )
