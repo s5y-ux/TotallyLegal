@@ -2,9 +2,11 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
 suspend fun MasterAPILib(url: String): List<Map<String, Any>>? {
     return withContext(Dispatchers.IO) { // Run in background thread
@@ -71,6 +73,57 @@ data class PoliticianTrades(
     val politician: String,
     val tradesData: List<TradeEntry>
 )
+
+data class ProfileClass(
+    @SerializedName("Age")
+    val age: String,
+    @SerializedName("Date of Birth")
+    val dateOfBirth: String,
+    @SerializedName("District")
+    val district: String,
+    @SerializedName("Issuers")
+    val issuers: String,
+    @SerializedName("Last Traded")
+    val lastTraded: String,
+    @SerializedName("Most Traded Issuers")
+    val mostTradedIssuers: Map<String, String>,
+    @SerializedName("Most Traded Sectors")
+    val mostTradedSectors: Map<String, String>,
+    @SerializedName("Trade Data")
+    val tradeData: List<List<String>>,
+    @SerializedName("Name")
+    val name: String,
+    @SerializedName("AI Analysis")
+    val aiResponse: String
+)
+
+fun parseProfileResponse(url: String): ProfileClass? {
+    return try {
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+        val request = Request.Builder().url(url).build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                println("API Error: ${response.code}")
+                return null
+            }
+
+            val jsonBody = response.body?.string()
+            if (jsonBody != null) {
+                return Gson().fromJson(jsonBody, ProfileClass::class.java)
+            }
+            null
+        }
+    } catch (e: Exception) {
+        println("Error fetching or parsing JSON: ${e.message}")
+        null
+    }
+}
+
 
 fun parseLatestTradesResponse(url: String): List<List<String>>? {
     return try {

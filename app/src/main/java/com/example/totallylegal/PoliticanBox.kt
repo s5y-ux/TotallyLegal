@@ -55,15 +55,6 @@ fun PoliticianBox(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
-                IconButton(onClick = onStarToggle) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(
-                            id = if (isStarred) R.drawable.ic_star_filled else R.drawable.ic_star_filled
-                        ),
-                        contentDescription = if (isStarred) "Unstar" else "Star",
-                        tint = if (isStarred) Color.Green else Color.Red
-                    )
-                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))

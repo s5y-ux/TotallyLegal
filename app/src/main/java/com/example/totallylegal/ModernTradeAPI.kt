@@ -1,10 +1,12 @@
 package com.example.totallylegal
 
 import PoliticianTrades
+import ProfileClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import parseLatestTradesResponse
 import parsePoliticianResponse
+import parseProfileResponse
 import parseTradeResponse
 
 class ModernTradeAPI {
@@ -17,6 +19,19 @@ class ModernTradeAPI {
             } else {
                 println("Fallback: No trade data available")
                 emptyMap() // Return an empty map instead of calling `politicianPage`
+            }
+        }
+    }
+
+    suspend fun fetchProfileData(id: String): ProfileClass? {
+        return withContext(Dispatchers.IO) {
+            val apiUrl = "https://premium-formally-hawk.ngrok-free.app/get_profile?name=$id"
+            val data = parseProfileResponse(apiUrl)
+            if (data != null) {
+                data
+            } else {
+                println("Fallback: No profile data available")
+                null
             }
         }
     }

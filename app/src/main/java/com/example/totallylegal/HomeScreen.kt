@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -19,22 +20,25 @@ import androidx.navigation.NavController
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    val tradeList = remember { mutableStateOf(emptyList<Map<String, Any>>()) }
-    val newList = remember { mutableStateOf(mapOf<String, List<String>>()) }
-    val starred = remember { mutableStateOf(mutableSetOf<String>()) }
+    val cachedTradeList = rememberSaveable { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    val cachedNewList = rememberSaveable { mutableStateOf<Map<String, List<String>>>(emptyMap()) }
+    val starred = rememberSaveable { mutableStateOf(mutableSetOf<String>()) }
     val coroutineScope = rememberCoroutineScope()
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
 
+    // Only fetch if cache is empty
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            tradeList.value = TradeAPI().fetchTradeData()
-            newList.value = ModernTradeAPI().fetchTradeData()
-            Log.d("Size", tradeList.value.size.toString())
-            Log.d("Modern", newList.value.toString())
+        if (cachedTradeList.value.isEmpty() && cachedNewList.value.isEmpty()) {
+            coroutineScope.launch {
+                cachedTradeList.value = TradeAPI().fetchTradeData()
+                cachedNewList.value = ModernTradeAPI().fetchTradeData()
+                Log.d("Size", cachedTradeList.value.size.toString())
+                Log.d("Modern", cachedNewList.value.toString())
+            }
         }
     }
 
-    val filteredAndSorted = newList.value
+    val filteredAndSorted = cachedNewList.value
         .filterKeys { it.contains(searchQuery, ignoreCase = true) }
         .toList()
         .sortedWith(compareByDescending<Pair<String, List<String>>> { (name, _) ->
@@ -60,7 +64,7 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (tradeList.value.isEmpty()) {
+            if (cachedTradeList.value.isEmpty()) {
                 item {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -100,4 +104,3 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
-

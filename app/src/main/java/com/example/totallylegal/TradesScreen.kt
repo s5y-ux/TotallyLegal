@@ -17,22 +17,33 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TradesScreen() {
-    val tradeList = remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
-    val newTradeList = remember { mutableStateOf<List<List<String>>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
-    // Fetch API data when the screen is loaded
-    LaunchedEffect(Unit) {
+    // Cache the last known good data
+    var cachedTradeList by remember { mutableStateOf<List<List<String>>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+
+    fun fetchTrades() {
         coroutineScope.launch {
-            tradeList.value = TradeAPI().fetchTradeData()
-            newTradeList.value = ModernTradeAPI().fetchLatestTradesData()
-            Log.d("Size", newTradeList.value.size.toString())
+            try {
+                val latestTrades = ModernTradeAPI().fetchLatestTradesData()
+                cachedTradeList = latestTrades
+            } catch (e: Exception) {
+                Log.e("TradesScreen", "Error fetching trades: ${e.message}")
+            } finally {
+                isLoading = false
+            }
         }
     }
 
-    val filteredList = newTradeList.value.filter {
-        it[5].contains(searchQuery, ignoreCase = true)
+    // Fetch data when the screen loads
+    LaunchedEffect(Unit) {
+        fetchTrades()
+    }
+
+    val filteredList = cachedTradeList.filter {
+        it.getOrNull(5)?.contains(searchQuery, ignoreCase = true) == true
     }
 
     Column(
@@ -54,7 +65,7 @@ fun TradesScreen() {
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            if (newTradeList.value.isEmpty()) {
+            if (cachedTradeList.isEmpty() && isLoading) {
                 item {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -73,22 +84,37 @@ fun TradesScreen() {
                         )
                     }
                 }
+            } else if (filteredList.isEmpty()) {
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "No trades found.",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Thin,
+                            color = Color.White
+                        )
+                    }
+                }
             } else {
                 items(filteredList.size) { index ->
                     val ref = filteredList[index]
                     TradeBox(
-                        ref[0],
-                        ref[1],
-                        ref[2],
-                        ref[3],
-                        ref[4],
-                        ref[5],
-                        ref[6],
-                        ref[7],
-                        ref[8],
-                        ref[9],
-                        ref[10],
-                        ref[11]
+                        ref.getOrNull(0) ?: "",
+                        ref.getOrNull(1) ?: "",
+                        ref.getOrNull(2) ?: "",
+                        ref.getOrNull(3) ?: "",
+                        ref.getOrNull(4) ?: "",
+                        ref.getOrNull(5) ?: "",
+                        ref.getOrNull(6) ?: "",
+                        ref.getOrNull(7) ?: "",
+                        ref.getOrNull(8) ?: "",
+                        ref.getOrNull(9) ?: "",
+                        ref.getOrNull(10) ?: "",
+                        ref.getOrNull(11) ?: ""
                     )
                 }
             }
